@@ -26,3 +26,50 @@ Utilizaremos 5 variables en nuestro modelo, una variable de interes o de respues
 En primera medida, tenemos la variable de respuesta: 
 
 modelo <- glm(descuento ~privada+seguidores+origen+etcétera, data = Data, family = binomial(link="logit"))
+
+
+library(readr)
+library(stargazer)
+library(margins)
+library(foreign);library(car); library(lmtest); library(sandwich) 
+
+rm(list = ls())
+choose.files()
+
+base <- read.csv("C:\\Users\\andre\\OneDrive\\Documentos\\Base de datos.csv")
+basec <- na.omit(base)
+attach(basec)
+mlin <- lm(Descuento.dado~Privada+Seguidores+Producto.nacional+Precio.dado+Precios.publicos, data = basec)
+summary(mlin)
+coeftest(mlin, vcov = vcovHC(mlin, "HC1"))
+
+linfit=fitted(mlin)
+cplot(mlin,"Privada")        
+
+mlinres=resid(mlin)
+bptest(mlin, ~ fitted(mlin) + I(fitted(mlin)^2))
+
+margins(mlin, vcov = vcovHC(mlin, "HC1") )
+
+mpro<-glm(Descuento.dado~Privada+Seguidores+Producto.nacional+Precio.dado+Precios.publicos, data = basec, family=binomial(link=probit))
+summary(mpro)
+profit<-fitted(mpro)
+cplot(mpro, "Privada")
+
+marpro <- margins(mpro, vcov = vcovHC(mpro, "HC1") )
+summary(marpro)
+cplot(mpro, "Privada", what = "effect")
+
+mlog<-glm(Descuento.dado~Privada+Seguidores+Producto.nacional+Precio.dado+Precios.publicos, data = basec, family=binomial(link=logit))
+summary(mlog)
+logfit<-fitted(mlog)
+cplot(mlog, "Privada")
+
+marlog <- margins(mlog, vcov = vcovHC(mlog, "HC1") )
+summary(marlog)
+cplot(mlog, "Privada", what = "effect")
+
+# modelo para precios
+
+mpre <- lm(Precio.dado~Privada+Seguidores+Producto.nacional+Target, data = basec)
+summary(mpre)
