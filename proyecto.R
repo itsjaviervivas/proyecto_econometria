@@ -1,6 +1,1 @@
-print("holaaaa")
-print("Por fin") 
-prin("juju")
-print("Hola")
-print(2+1)
 modelo <- glm(descuento ~privada+seguidores+origen+etcétera, data = Data, family = binomial(link="logit"))
