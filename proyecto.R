@@ -61,4 +61,17 @@ mpre <- lm(Precio.dado~Privada+Seguidores+Producto.nacional+target, data = basec
 summary(mpre)
 cplot(mpre, "Privada")
 
+mpre <- lm(log(Precio.dado)~Privada+Seguidores+Producto.nacional+target, data = basec)
+summary(mpre)
+cplot(mpre, "Privada")
+coeftest(mpre, vcov = vcovHC(mpre, "HC1"))
+
+base2 <- read.csv("/Users/javiervivas/Documents/Documentos - Javier’s MacBook Pro/Finanzas_Comercio_Internacional/2021-2 Sexto Semestre/Econometria_Basica/Proyecto_Final/Base de datos 2.csv", sep = ";")
+basec2 <- na.omit(base2)
+attach(basec2)
+mlin2 <- lm(Variación.porcentual~Seguidores+Producto.nacional+Precios.publicos+Target+Seguidos, data = basec2)
+summary(mlin2)
+coeftest(mlin2, vcov = vcovHC(mlin2, "HC1"))
+
+
 
