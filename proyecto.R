@@ -57,5 +57,8 @@ cplot(mlog, "Privada", what = "effect")
 
 # modelo para precios
 
-mpre <- lm(Precio.dado~Privada+Seguidores+Producto.nacional+Target, data = basec)
+mpre <- lm(Precio.dado~Privada+Seguidores+Producto.nacional+target, data = basec)
 summary(mpre)
+cplot(mpre, "Privada")
+
+
